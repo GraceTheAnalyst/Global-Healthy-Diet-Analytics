@@ -35,9 +35,8 @@ The dataset used for this analysis is:
 
 ## Data Preparation/Cleaning
 
-The raw dataset contained significant data quality issues. Upon inspection, the `region` column was found to be mislabeled for the vast majority of the 175 countries (for example, Argentina, Australia, Canada, and China were all incorrectly listed under "Africa"). The `cost_category` column also contained a large number of blank values.
+The raw dataset contained significant data quality issues. Upon inspection, the `region` column was found to be mislabeled for the vast majority of the 175 countries.
 
-To resolve this:
 - Each country's region was manually verified and corrected based on actual geography
 - Missing `cost_category` values were filled in using the median daily diet cost as a threshold, classifying countries above the median as "High Cost" and below as "Medium Cost"
 - Duplicate rows were checked and removed
@@ -52,14 +51,49 @@ Initial exploration in SQL focused on understanding the shape and distribution o
 
 ## Data Analysis
 
-SQL was used to query and aggregate the cleaned dataset, generating regional averages, country rankings, and year-over-year trends. The aggregated results were then loaded into a Jupyter notebook, where Plotly was used to build five interactive visualizations:
+A few snippets from the project that solved interesting problems along the way.
 
-1. Top 10 most expensive countries for a healthy diet
-2. Average cost by region
-3. Global cost trend over time (2017–2024)
-4. Top 10 least expensive countries for a healthy diet
-5. High Cost vs Medium Cost country counts by region
+**Fixing 175 mislabeled regions with a single lookup**
 
+The original dataset had countries assigned to the wrong region almost entirely. Rather than fixing rows one by one, a dictionary mapping every country to its correct region was built and applied in one line:
+
+```python
+df['region'] = df['country'].map(region_map)
+```
+
+**Filling missing cost categories based on the data**
+
+Instead of manually labeling blank cost categories, the median cost was used as a natural dividing line:
+
+```python
+median_cost = df['cost_healthy_diet_ppp_usd'].median()
+
+df['cost_category'] = df['cost_healthy_diet_ppp_usd'].apply(
+    lambda x: 'High Cost' if x >= median_cost else 'Medium Cost'
+)
+```
+
+**Aggregating cost trends by year in SQL**
+
+```sql
+SELECT year,
+       ROUND(AVG(cost_healthy_diet_ppp_usd), 2) AS avg_daily_cost
+FROM diet_costs
+GROUP BY year
+ORDER BY year ASC;
+```
+
+**Turning a SQL ranking query into an interactive chart**
+
+```python
+top10 = df_full.groupby('country')['cost_healthy_diet_ppp_usd'].mean().sort_values(ascending=False).head(10).reset_index()
+
+fig = px.bar(top10, x='cost_healthy_diet_ppp_usd', y='country', orientation='h',
+             title='Top 10 Most Expensive Countries for a Healthy Diet',
+             color='cost_healthy_diet_ppp_usd', color_continuous_scale='Blues')
+fig.update_layout(yaxis={'categoryorder': 'total ascending'})
+fig.show()
+```
 ## Results/Findings
 
 - **Most expensive:** Japan has the highest average daily cost for a healthy diet among all countries studied
