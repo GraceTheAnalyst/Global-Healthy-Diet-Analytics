@@ -18,8 +18,12 @@
 
 This data analysis project explores the cost of maintaining a healthy diet across 175 countries from 2017 to 2024. By analyzing cost patterns across regions and over time, this project seeks to identify which parts of the world face the highest and lowest costs for healthy eating, how those costs have changed over the past several years, and what data quality challenges affect this kind of global analysis.
 
-## Data Sources
+<img width="1296" height="505" alt="Screenshot (47" src="https://github.com/user-attachments/assets/3494029d-3ee7-44a1-97df-76d9af4042cf" />
 
+
+## Data Sources
+The dataset used for this analysis is:
+[price_of_healthy_diet_clean.csv](price_of_healthy_diet_clean.csv)
 
 ## Tools
 
@@ -59,9 +63,24 @@ SQL was used to query and aggregate the cleaned dataset, generating regional ave
 ## Results/Findings
 
 - **Most expensive:** Japan has the highest average daily cost for a healthy diet among all countries studied
+
+<img width="1270" height="480" alt="Screenshot (44" src="https://github.com/user-attachments/assets/9d23e140-861b-4ec1-8024-54be6dda2936" />
+
+  
 - **Regional gap:** The Americas region has the highest average cost, while Europe is the most affordable on average
+
+<img width="1183" height="523" alt="Screenshot (45" src="https://github.com/user-attachments/assets/3907c3c5-78fe-460c-ae57-00814f90576d" />
+
+
 - **Rising costs:** The global average cost of a healthy diet has trended upward since 2017, with a sharper rise after 2020
+
+<img width="1231" height="489" alt="Screenshot (46" src="https://github.com/user-attachments/assets/7eec5265-2d71-47a4-9c74-d3eff6b62222" />
+
+
 - **Cost categories:** High Cost and Medium Cost countries are fairly evenly split overall, but distribution varies notably by region
+
+<img width="1074" height="481" alt="Screenshot 49" src="https://github.com/user-attachments/assets/cc14c449-9b81-4cd8-91a4-cc1f3848d242" />
+
 
 ## Recommendations
 
